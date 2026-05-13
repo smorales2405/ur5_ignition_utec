@@ -90,7 +90,7 @@
       <include>
             <uri>model://bidon</uri>
       </include>
-      <pose>1.0 0.0 0.0 0 -0 1.5</pose>
+      <pose>1.2 0.0 -0.435 0 -0 1.552</pose>
     </model>
  
 
