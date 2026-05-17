@@ -25,7 +25,7 @@ install(TARGETS new_node
   DESTINATION lib/${PROJECT_NAME})
 
 install(
-  DIRECTORY launch meshes urdf test worlds
+  DIRECTORY launch meshes worlds urdf config
   DESTINATION share/${PROJECT_NAME}
 )
 
