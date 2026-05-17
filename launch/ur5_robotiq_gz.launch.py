@@ -96,23 +96,12 @@ def launch_setup(context, *args, **kwargs):
         condition=UnlessCondition(start_joint_controller),
     )
 
-    robotiq_gripper_controller_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=[
-            "robotiq_gripper_controller",
-            "--controller-manager", "/controller_manager",
-            "--controller-manager-timeout", "30",
-        ],
-    )
-
     delay_joint_controller_after_jsb = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=joint_state_broadcaster_spawner,
             on_exit=[
                 initial_joint_controller_spawner_started,
                 initial_joint_controller_spawner_stopped,
-                robotiq_gripper_controller_spawner,
             ],
         )
     )

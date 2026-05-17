@@ -21,9 +21,9 @@ controller_manager:
     forward_position_controller:
       type: forward_command_controller/ForwardCommandController
 
-    # ── Robotiq 2F-85 controller ──────────────────────────────────────────────
-    robotiq_gripper_controller:
-      type: position_controllers/GripperActionController
+    # ── Robotiq 2F-85 controller (stage 2: uncomment spawner in launch) ──────
+    # robotiq_gripper_controller:
+    #   type: parallel_gripper_action_controller/GripperActionController
 
 
 # ── UR5 controller parameters ────────────────────────────────────────────────
@@ -81,13 +81,12 @@ forward_position_controller:
       - wrist_3_joint
     interface_name: position
 
-# ── Robotiq 2F-85 controller parameters ──────────────────────────────────────
-
-robotiq_gripper_controller:
-  ros__parameters:
-    joint: robotiq_85_left_knuckle_joint
-    action_monitor_rate: 20.0
-    allow_stalling: true
-    stall_timeout: 1.0
-    stall_velocity_threshold: 1.0e-5
-    goal_tolerance: 0.01
+# ── Robotiq 2F-85 controller parameters (stage 2) ────────────────────────────
+# robotiq_gripper_controller:
+#   ros__parameters:
+#     joint: robotiq_85_left_knuckle_joint
+#     action_monitor_rate: 20.0
+#     allow_stalling: true
+#     stall_timeout: 1.0
+#     stall_velocity_threshold: 1.0e-5
+#     goal_tolerance: 0.01

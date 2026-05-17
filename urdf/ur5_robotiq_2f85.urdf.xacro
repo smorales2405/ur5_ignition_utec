@@ -106,4 +106,15 @@
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </xacro:robotiq_gripper>
 
+  <!-- ===== TCP del gripper ===== -->
+  <!-- Frame fijo al centro del plano de agarre del Robotiq 2F-85.
+       Offset 130 mm en Z desde robotiq_85_base_link: distancia aproximada
+       hasta el centro entre las puntas de los dedos en posición nominal. -->
+  <link name="gripper_tcp"/>
+  <joint name="gripper_tcp_joint" type="fixed">
+    <parent link="robotiq_85_base_link"/>
+    <child  link="gripper_tcp"/>
+    <origin xyz="0 0 0.130" rpy="0 0 0"/>
+  </joint>
+
 </robot>
