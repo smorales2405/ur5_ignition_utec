@@ -188,20 +188,28 @@ def generate_launch_description():
     ]
 
     # Resolve package share directories at generation time
-    world_pkg         = get_package_share_directory("ur5_l201")
-    ur_desc_share     = get_package_share_directory("ur_description")
+    world_pkg          = get_package_share_directory("ur5_l201")
+    ur_desc_share      = get_package_share_directory("ur_description")
     robotiq_desc_share = get_package_share_directory("robotiq_description")
 
-    # IGN_GAZEBO_RESOURCE_PATH: needed so Gazebo can find meshes referenced via
-    # package:// URIs for both ur_description and robotiq_description.
+    # Build the resource path value once.
+    resource_path_value = ":".join(filter(None, [
+        os.path.dirname(ur_desc_share),       # parent of ur_description share
+        os.path.dirname(robotiq_desc_share),  # parent of robotiq_description share
+        os.path.join(world_pkg, "meshes"),    # UTEC custom meshes
+        os.environ.get("IGN_GAZEBO_RESOURCE_PATH", ""),
+    ]))
+
+    # Set the variable NOW in the current Python process (at generate_launch_description
+    # time, before any subprocess is forked).  This guarantees that Gazebo inherits the
+    # correct path unconditionally, even when IncludeLaunchDescription starts gz_sim
+    # before the SetEnvironmentVariable action is processed by the launch event loop.
+    os.environ["IGN_GAZEBO_RESOURCE_PATH"] = resource_path_value
+
+    # Keep the launch-action as well so the value is also visible in the launch context.
     set_resource_path = SetEnvironmentVariable(
         name="IGN_GAZEBO_RESOURCE_PATH",
-        value=":".join(filter(None, [
-            os.path.dirname(ur_desc_share),       # parent of ur_description share
-            os.path.dirname(robotiq_desc_share),  # parent of robotiq_description share
-            os.path.join(world_pkg, "meshes"),    # UTEC custom meshes
-            os.environ.get("IGN_GAZEBO_RESOURCE_PATH", ""),
-        ])),
+        value=resource_path_value,
     )
 
     gz_sim = IncludeLaunchDescription(
